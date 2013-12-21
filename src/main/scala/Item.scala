@@ -1,34 +1,34 @@
 package main.scala
 
-/**
+/** Item Class
  * Created with IntelliJ IDEA.
  * User: howens
  * Date: 12/20/13
  * Time: 12:35 PM
- * To change this template use File | Settings | File Templates.
+ * This class implements an item for the Socrata coding challenge
+ * each item has an associated cost with taxes that is calculated
+  * @param cost
+  * @param isExempt
+  * @param isImported
  */
-abstract class Item {
+class Item(cost: Double, isExempt: Boolean, isImported: Boolean) {
   private val regTaxRate: Double = .1
   private val importDuty: Double = .05
   private val nearest: Double = .05
-  var cost: Double
-  var isExempt: Boolean
-  var isImported: Boolean
-  var totalCost: Double
   //Rounds to the nearest value as prescribed in nearest
   private def round_nearest(x:Double):Double = {
     return scala.math.round((x / nearest)) * nearest
   }
-  // Creates the amount of taxes. Currently does not implement rounding
+  // item cost with  taxes.
   // This would be an ideal place to implement pattern matching, maybe
   def costWithTaxes(): Double =  {
-    totalCost = cost
     if (isImported && !isExempt) //Both Imported and not Exempt:: Max Tax
-      totalCost += round_nearest(cost * importDuty) + round_nearest(cost * regTaxRate)
+      return round_nearest(cost * importDuty) + round_nearest(cost * regTaxRate) + cost
     else if (!isExempt) //Just Reg Tax Rate
-      totalCost += round_nearest(cost * regTaxRate)
+      return round_nearest(cost * regTaxRate) + cost
     else if (isImported) //Just import duty
-      totalCost += round_nearest(cost * importDuty)
-    return totalCost
+      return round_nearest(cost * importDuty) + cost
+    else
+      return cost
   }
 }

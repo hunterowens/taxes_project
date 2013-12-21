@@ -2,7 +2,12 @@ name := "taxes_project"
 
 version := "1.0-SNAPSHOT"
 
-scalaVersion := "2.9.2"
+scalaVersion := "2.10.3"
 
-libraryDependencies += "org.scala-tools.testing" %% "scalacheck" % "1.9" % "test"
+libraryDependencies ++= Seq(
+  "org.specs2" %% "specs2" % "2.3.6" % "test"
+  )
 
+scalacOptions in Test ++= Seq("-Yrangepos")
+
+resolvers ++= Seq("snapshots", "releases").map(Resolver.sonatypeRepo)
