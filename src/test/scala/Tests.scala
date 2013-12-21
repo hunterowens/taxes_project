@@ -8,6 +8,7 @@ import main.scala.Item
  * Date: 12/20/13
  * Time: 4:37 PM
  * To change this template use File | Settings | File Templates.
+ * Tests the ability of an item to calculate proper tax
  */
 
 class ItemSpecification extends Specification {
