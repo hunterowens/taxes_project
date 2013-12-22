@@ -16,19 +16,19 @@ class ItemSpecification extends Specification {
     "return the proper tax cost" >> {
       "With No taxes" in {
           val item = new Item(10.00, true,false)
-          item.costWithTaxes() should be equalTo(10.00)
+          item.taxes() should be equalTo(0.0)
         }
       "With only Import Tax" in {
         val item = new Item(10.00, true,true)
-        item.costWithTaxes() should be equalTo(10.50)
+        item.taxes() should be equalTo(.50)
         }
       "With only Regular Tax" in {
         val item = new Item(10.00, false,false)
-        item.costWithTaxes() should be equalTo(11.00)
+        item.taxes() should be equalTo(1.00)
       }
       "And With Both Taxes" in {
         val item = new Item(10.00, false,true)
-        item.costWithTaxes() should be equalTo(11.50)
+        item.taxes() should be equalTo(1.50)
       }
      }
   }

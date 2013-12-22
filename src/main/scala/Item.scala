@@ -21,14 +21,14 @@ class Item(cost: Double, isExempt: Boolean, isImported: Boolean) {
   }
   // item cost with  taxes.
   // This would be an ideal place to implement pattern matching, maybe
-  def costWithTaxes(): Double =  {
+  def taxes(): Double =  {
     if (isImported && !isExempt) //Both Imported and not Exempt:: Max Tax
-      return round_nearest(cost * importDuty) + round_nearest(cost * regTaxRate) + cost
+      return round_nearest(cost * importDuty) + round_nearest(cost * regTaxRate)
     else if (!isExempt) //Just Reg Tax Rate
-      return round_nearest(cost * regTaxRate) + cost
+      return round_nearest(cost * regTaxRate)
     else if (isImported) //Just import duty
-      return round_nearest(cost * importDuty) + cost
+      return round_nearest(cost * importDuty)
     else
-      return cost
+      return 0.0
   }
 }
