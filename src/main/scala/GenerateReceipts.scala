@@ -18,8 +18,8 @@ object GenerateReceipts {
   val exempt = List("book","chocolate","pill")
   var firstBasket = true
   //Init the counters
-  var sum = 0.0
-  var taxes = 0.0
+  var sum = 0
+  var taxes = 0
   def main(args: Array[String])= {
     if(args.length>0) { // Gets File to Load Inputs
       for(line<-Source.fromFile(args(0)).getLines()) {
@@ -36,8 +36,8 @@ object GenerateReceipts {
             println("Total Cost: " + sum.toString)
             println(outputString)
             //reset counters
-            sum = 0.0
-            taxes = 0.0
+            sum = 0
+            taxes = 0
           }
         }
         // This is when not an other case
@@ -54,16 +54,16 @@ object GenerateReceipts {
               for (x <- exempt)
                 if (cleanLine.contains(x)) isExempt = true
               val item = new Item(cost,isExempt,isImported)
-              val taxLine = cleanLine.replace(cost.toString, item.costWithTaxes().toString)
+              val taxLine = cleanLine.replace(cost.toString, (item.costWithTaxes() / 100).toString)
               println(taxLine)
-              taxes += (item.taxes() * quantity)
-              sum += (item.costWithTaxes() * quantity)
+              //taxes += (item.taxes() * quantity)
+              //sum += (item.costWithTaxes() * quantity)
           }
         }
       }
       // Print the taxes for the last loop
-      println("Sales Taxes: " + (taxes / 100).toString)
-      println("Total Cost:" + (sum / 100).toString)
+      println("Sales Taxes: " + (taxes.toDouble / 100).toString)
+      println("Total Cost:" + (sum.toDouble / 100).toString)
     }
     else
       Console.err.println("Please enter filename")

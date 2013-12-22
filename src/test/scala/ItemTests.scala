@@ -16,45 +16,45 @@ class ItemSpecification extends Specification {
     "return the proper tax cost" >> {
       "With No taxes" in {
           val item = new Item(10.00, true,false)
-          item.taxes() should be equalTo(0.0)
-          item.costWithTaxes() should be equalTo(10.00)
+          item.taxes() should be equalTo(0)
+          item.costWithTaxes() should be equalTo(1000)
         }
       "With only Import Tax" in {
         val item = new Item(10.00, true,true)
-        item.taxes() should be equalTo(.50)
-        item.costWithTaxes() should be equalTo(10.50)
+        item.taxes() should be equalTo(50)
+        item.costWithTaxes() should be equalTo(1050)
       }
       "With only Regular Tax" in {
         val item = new Item(10.00, false,false)
-        item.taxes() should be equalTo(1.00)
-        item.costWithTaxes() should be equalTo(11.00)
+        item.taxes() should be equalTo(100)
+        item.costWithTaxes() should be equalTo(1100)
       }
       "And With Both Taxes" in {
         val item = new Item(10.00, false,true)
-        item.taxes() should be equalTo(1.50)
-        item.costWithTaxes() should be equalTo(11.50)
+        item.taxes() should be equalTo(150)
+        item.costWithTaxes() should be equalTo(1150)
       }
      }
     "And with rounding" >> {
       "With No Taxes"  in {
         val item = new Item(12.49, true, false)
-        item.taxes() should be equalTo (0.0)
-        item.costWithTaxes() should be equalTo (12.49)
+        item.taxes() should be equalTo (00)
+        item.costWithTaxes() should be equalTo (1249)
       }
       "With only Import Tax" in {
         val item = new Item(11.25, true, true)
-        item.taxes() should be equalTo (0.60)
-        item.costWithTaxes() should be equalTo (11.85)
+        item.taxes() should be equalTo (60)
+        item.costWithTaxes() should be equalTo (1185)
       }
       "With only Regular Tax" in {
         val item = new Item(18.99, false, false)
-        item.taxes() should be equalTo (1.90)
-        item.costWithTaxes() should be equalTo (20.89)
+        item.taxes() should be equalTo (190)
+        item.costWithTaxes() should be equalTo (2089)
       }
       "And With Both Taxes" in {
         val item = new Item(27.99, false,true)
-        item.taxes() should be equalTo(4.20)
-        item.costWithTaxes() should be equalTo(32.19)
+        item.taxes() should be equalTo(420)
+        item.costWithTaxes() should be equalTo(3219)
       }
     }
   }

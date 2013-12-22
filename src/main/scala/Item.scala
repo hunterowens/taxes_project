@@ -12,29 +12,43 @@ package main.scala
   * @param isImported
  */
 class Item(cost: Double, isExempt: Boolean, isImported: Boolean) {
-  private val regTaxRate: Double = .1
-  private val importDuty: Double = .05
+  private val regTaxRate: Int = 10
+  private val importDuty: Int = 20
+  //The No Decimal version
+  private val costNoCents = scala.math.rint(cost * 100).toInt
   //Rounds to the nearest value to .05
-  private def roundUp(x:Double):Double = {
-    val withCents = x / 100
-    val rounded = (scala.math.ceil(x * 20)) / 20
-    val withoutCents = x * 100
-    return withoutCents
+  private def roundUp(x:Double):Int = {
+    val modVal = x % 10
+    var retVal = x
+    modVal match {
+      case 1 => retVal = x + 4
+      case 2 => retVal = x + 3
+      case 3 => retVal = x + 2
+      case 4 => retVal = x + 1
+      case 5 => retVal = x + 0
+      case 6 => retVal = x + 4
+      case 7 => retVal = x + 3
+      case 8 => retVal = x + 2
+      case 9 => retVal = x + 1
+      case 0 => retVal = x + 0
+    }
+    retVal.toInt
   }
-  private var costNoCents = (cost * 100).toInt
   // item   tax cost.
   // This would be an ideal place to implement pattern matching, maybe
+  //Returns multiple of 100 (no cents)
   def taxes(): Double =  {
     var tax = 0.0
     if (isImported && !isExempt) //Both Imported and not Exempt:: Max Tax
-      tax = roundUp(costNoCents * importDuty) + roundUp(costNoCents * regTaxRate)
+      tax = roundUp(costNoCents / importDuty) + roundUp(costNoCents / regTaxRate)
     else if (!isExempt) //Just Reg Tax Rate
-      tax = roundUp(costNoCents * regTaxRate)
+      tax = roundUp(costNoCents / regTaxRate)
     else if (isImported) //Just import duty
-      tax = roundUp(costNoCents * importDuty)
-    return tax / 100
+      tax = roundUp(costNoCents / importDuty)
+    tax.toInt
   }
+  //Returns multiple of 100 (no cents)
   def costWithTaxes(): Double = {
-    (costNoCents + this.taxes()) / 100
+    costNoCents + this.taxes()
   }
 }
