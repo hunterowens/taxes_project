@@ -15,21 +15,23 @@ class Item(cost: Double, isExempt: Boolean, isImported: Boolean) {
   private val regTaxRate: Double = .1
   private val importDuty: Double = .05
   //Rounds to the nearest value to .05
-  private def roundNearest(x:Double):Double = {
+  private def roundUp(x:Double):Double = {
+    val withCents = x / 100
     val rounded = (scala.math.ceil(x * 20)) / 20
-    return rounded
+    val withoutCents = x * 100
+    return withoutCents
   }
-  private var costNoCents = (cost * 100)
+  private var costNoCents = (cost * 100).toInt
   // item   tax cost.
   // This would be an ideal place to implement pattern matching, maybe
   def taxes(): Double =  {
     var tax = 0.0
     if (isImported && !isExempt) //Both Imported and not Exempt:: Max Tax
-      tax = roundNearest(costNoCents * importDuty) + roundNearest(costNoCents * regTaxRate)
+      tax = roundUp(costNoCents * importDuty) + roundUp(costNoCents * regTaxRate)
     else if (!isExempt) //Just Reg Tax Rate
-      tax = roundNearest(costNoCents * regTaxRate)
+      tax = roundUp(costNoCents * regTaxRate)
     else if (isImported) //Just import duty
-      tax = roundNearest(costNoCents * importDuty)
+      tax = roundUp(costNoCents * importDuty)
     return tax / 100
   }
   def costWithTaxes(): Double = {
