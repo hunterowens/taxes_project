@@ -7,6 +7,9 @@ package main.scala
  * Time: 12:35 PM
  * This class implements an item for the Socrata coding challenge
  * each item has an associated cost with taxes that is calculated
+ * It takes advantage of the fact that it is easier to represent money
+  * as an int rather than a double/float, where the something like
+  * 9.99 + 9.99 does not equal 19.98
   * @param cost
   * @param isExempt
   * @param isImported
@@ -37,7 +40,7 @@ class Item(cost: Double, isExempt: Boolean, isImported: Boolean) {
   // item   tax cost.
   // This would be an ideal place to implement pattern matching, maybe
   //Returns multiple of 100 (no cents)
-  def taxes(): Double =  {
+  def taxes(): Int =  {
     var tax = 0.0
     if (isImported && !isExempt) //Both Imported and not Exempt:: Max Tax
       tax = roundUp(costNoCents / importDuty) + roundUp(costNoCents / regTaxRate)
@@ -48,7 +51,7 @@ class Item(cost: Double, isExempt: Boolean, isImported: Boolean) {
     tax.toInt
   }
   //Returns multiple of 100 (no cents)
-  def costWithTaxes(): Double = {
-    costNoCents + this.taxes()
+  def costWithTaxes(): Int = {
+    (costNoCents + this.taxes()).toInt
   }
 }
